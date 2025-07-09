@@ -19,9 +19,24 @@ img {
   display: flex;
 }
 
+.slide:hover {
+  will-change: transform;
+}
+
 .slide li {
   flex-shrink: 0;
   width: 80vw;
   max-width: 800px;
   margin: 0 20px;
+
+  border-radius: 8px;
+  overflow: clip;
+  opacity: 0.8;
+  transform: scale(0.8);
+  transition: 152ms cubic-bezier(0.2, , 2, 1, 2) allow-discrete;
+}
+
+.slide li.active {
+  opacity: 1;
+  transform: scale(1);
 }

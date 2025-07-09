@@ -1,3 +1,5 @@
+import debounceScroll from "./debounce-scroll.js";
+
 export default class Slide {
   constructor(wrapper, slide) {
     this.slide = document.querySelector(slide);
@@ -7,6 +9,7 @@ export default class Slide {
       startX: 0,
       movement: 0,
     };
+    this.activeClass = "active";
   }
 
   transition(active) {
@@ -73,11 +76,6 @@ export default class Slide {
     this.wrapper.addEventListener("touchend", this.onEnd, { passive: true });
   }
 
-  bindEvents() {
-    this.onStart = this.onStart.bind(this);
-    this.onMove = this.onMove.bind(this);
-    this.onEnd = this.onEnd.bind(this);
-  }
   slidePosition(slide) {
     const margin = (this.wrapper.offsetWidth - slide.offsetWidth) / 2;
     return -(slide.offsetLeft - margin);
@@ -97,23 +95,50 @@ export default class Slide {
       const position = this.slidePosition(item);
       return { position, item };
     });
-    console.log(this.slideArr);
   }
 
   changeSlide(index) {
     const active = this.slideArr[index];
-    this.moveSlide(this.slideArr[index].position);
+    this.moveSlide(active.position);
     this.slideIndexNav(index);
     this.dist.finalPosition = active.position;
+    this.changeActiveClass();
+  }
+
+  changeActiveClass() {
+    this.slideArr.forEach(slide => {
+      return slide.item.classList.remove(this.activeClass);
+    });
+    this.slideArr[this.index.active].item.classList.add(this.activeClass);
   }
 
   activePrevSlide() {
     if (this.index.prev === undefined) return;
     this.changeSlide(this.index.prev);
   }
+
   activeNextSlide() {
     if (this.index.next === undefined) return;
     this.changeSlide(this.index.next);
+  }
+
+  onResize() {
+    setTimeout(() => {
+      this.slideConfig();
+      this.changeSlide(this.index.active);
+    }, 600);
+  }
+
+  addResizeEvent() {
+    window.addEventListener("resize", this.onResize);
+  }
+
+  bindEvents() {
+    this.onStart = this.onStart.bind(this);
+    this.onMove = this.onMove.bind(this);
+    this.onEnd = this.onEnd.bind(this);
+
+    this.onResize = debounceScroll(this.onResize.bind(this), 200);
   }
 
   init() {
@@ -121,6 +146,7 @@ export default class Slide {
     this.transition(true);
     this.addSlideEvents();
     this.slideConfig();
+    this.addResizeEvent();
     return this;
   }
 }

@@ -59,8 +59,24 @@ export default class Slide {
     this.onMove = this.onMove.bind(this);
     this.onEnd = this.onEnd.bind(this);
   }
+  slidePosition(slide) {
+    const margin = (this.wrapper.offsetWidth - slide.offsetWidth) / 2;
+    return margin;
+  }
+
+  slideConfig() {
+    this.slideArr = [...this.slide.children].map(item => {
+      const position = this.slidePosition(item);
+      return {
+        position,
+        item,
+      };
+    });
+    console.log(this.slideArr);
+  }
 
   init() {
+    this.slideConfig();
     this.bindEvents();
     this.addSlideEvents();
     return this;

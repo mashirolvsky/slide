@@ -27,18 +27,23 @@ img {
   flex-shrink: 0;
   width: 80vw;
   max-width: 800px;
-  margin: 0 20px;
+  margin: 0 1.5rem;
 
-  border-radius: 8px;
+  border-radius: 25rem;
   overflow: clip;
   opacity: 0.8;
   transform: scale(0.8);
-  transition: 640ms cubic-bezier(0.2, -0.2, 0.01, 1.2) allow-discrete;
+  transition: 352ms cubic-bezier(0.2, 0, 0, 1) allow-discrete;
+}
+
+.slide li:hover {
+  border-radius: 10rem;
 }
 
 .slide li.active {
   opacity: 1;
   transform: scale(1);
+  border-radius: 5rem;
 }
 
 [data-control="slide"] {
@@ -55,7 +60,7 @@ img {
   background: #fb5;
   border-radius: 8px;
   overflow: clip;
-  transition: scale 352ms cubic-bezier(0.2, 0, 01);
+  transition: scale 352ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 [data-control="slide"] li.active a,
@@ -78,9 +83,17 @@ img {
   transform: scale(0.6);
   width: 3.5rem;
   height: 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   overflow: hidden;
-  transition: 640ms cubic-bezier(0.2, -0.2, 0.01, 1.2) allow-discrete;
+  transition: 352ms cubic-bezier(0.2, 1, 0, 1.5) allow-discrete;
+  cursor: pointer;
+}
+
+.custom-controls li:hover {
+  transform: scale(2);
+  opacity: 1;
+  z-index: 1;
+  border-radius: 0.5rem;
 }
 
 .custom-controls li.active {

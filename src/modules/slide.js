@@ -9,13 +9,19 @@ export default class Slide {
     };
   }
 
+  transition(active) {
+    this.slide.style.transition = active
+      ? "transform 300ms cubic-bezier(0.2,0,0,1.5)"
+      : "";
+  }
+
   moveSlide(distX) {
     this.dist.movedPosition = distX;
-    this.slide.style.transform = `translate3d(${distX}px, 0, 0)`;
+    this.slide.style.transform = `translate3d(${distX}px,0, 0)`;
   }
 
   updatePosition(clientX) {
-    this.dist.movement = (this.dist.startX - clientX) * 1.65;
+    this.dist.movement = (this.dist.startX - clientX) * (clientX * 0.01);
     return this.dist.finalPosition - this.dist.movement;
   }
   onStart(e) {
@@ -29,6 +35,7 @@ export default class Slide {
       movetype = "touchmove";
     }
     this.wrapper.addEventListener(movetype, this.onMove, { passive: true });
+    this.transition(false);
   }
 
   onMove(e) {
@@ -42,6 +49,18 @@ export default class Slide {
     const movetype = e.type === "mouseup" ? "mousemove" : "touchmove";
     this.wrapper.removeEventListener(movetype, this.onMove, { passive: true });
     this.dist.finalPosition = this.dist.movedPosition;
+    this.transition(true);
+    this.switchSlideOnEnd();
+  }
+
+  switchSlideOnEnd() {
+    if (this.dist.movement > 200 && this.index.next !== undefined) {
+      this.activeNextSlide();
+    } else if (this.dist.movement < -200 && this.index.prev !== undefined) {
+      this.activePrevSlide();
+    } else {
+      this.changeSlide(this.index.active);
+    }
   }
 
   addSlideEvents() {
@@ -72,7 +91,7 @@ export default class Slide {
   }
 
   slideIndexNav(index) {
-    let slideLength = index.length + 1;
+    let slideLength = this.slideArray.length - 1;
     this.index = {
       prev: index ? index - 1 : undefined,
       active: index,
@@ -87,8 +106,16 @@ export default class Slide {
     this.dist.finalPosition = activeSlide.position;
   }
 
+  activePrevSlide() {
+    if (this.index.prev !== undefined) this.changeSlide(this.index.prev);
+  }
+  activeNextSlide() {
+    if (this.index.next !== undefined) this.changeSlide(this.index.next);
+  }
+
   init() {
     this.bindEvents();
+    this.transition(true);
     this.addSlideEvents();
     this.slidesConfig();
     return this;

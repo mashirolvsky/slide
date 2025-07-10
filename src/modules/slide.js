@@ -13,7 +13,7 @@ export default class Slide {
     this.slide.style.transform = `translate3d(${posiX}px, 0, 0)`;
   }
   updatePosition(clientX) {
-    this.dist.movement = (this.dist.startX - clientX) * 1.84;
+    this.dist.movement = (this.dist.startX - clientX) * 1.64;
     return this.dist.finalPosition - this.dist.movement;
   }
 

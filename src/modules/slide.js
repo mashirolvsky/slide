@@ -4,29 +4,7 @@ export class Slide {
   constructor(wrapper, slide) {
     this.slide = document.querySelector(slide);
     this.wrapper = document.querySelector(wrapper);
-    this.dist = {
-      finalPosition: 0,
-      startX: 0,
-      movement: 0,
-    };
-    this.activeClass = "active";
   }
-
-  transition(active) {
-    this.slide.style.transition = active
-      ? "transform 152ms cubic-bezier(0.6,0,0,1)"
-      : "";
-  }
-
-  moveSlide(posiX) {
-    this.dist.movedPosition = posiX;
-    this.slide.style.transform = `translate3d(${posiX}px, 0, 0)`;
-  }
-  updatePosition(clientX) {
-    this.dist.movement = (this.dist.startX - clientX) * 1.84;
-    return this.dist.finalPosition - this.dist.movement;
-  }
-
   onStart(e) {
     if (e.type === "mousedown") return this.onMouseEvent(e);
     if (e.type === "touchstart") return this.onTouchEvent(e);
@@ -35,7 +13,7 @@ export class Slide {
 
   onMouseEvent(e) {
     e.preventDefault();
-    this.dist.startX = e.clientX;
+    console.log("Clicked!");
     this.wrapper.addEventListener("mousemove", this.onMove);
   }
 
@@ -45,26 +23,12 @@ export class Slide {
   }
 
   onMove(e) {
-    const eventType =
-      e.type === "mousemove" ? e.clientX : e.changedTouches[0].clientX;
-    const lastPosition = this.updatePosition(eventType);
-    this.moveSlide(lastPosition);
+    console.log("Moved");
   }
 
   onEnd(e) {
-    const moveType = e.type === "mouseup" ? "mousemove" : "touchmove";
-    this.wrapper.removeEventListener(moveType, this.onMove);
-    this.dist.finalPosition = this.dist.movedPosition;
-    this.transition(true);
-    this.changeOnEnd();
-  }
-
-  changeOnEnd() {
-    if (this.dist.movement > 120) {
-      this.activeNextSlide();
-    } else if (this.dist.movement < 120) {
-      this.activePrevSlide();
-    }
+    console.log("Ended");
+    this.wrapper.removeEventListener("mousemove", this.onMove);
   }
 
   addSlideEvents() {

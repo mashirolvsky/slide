@@ -6,12 +6,15 @@ export class Slide {
     this.wrapper = document.querySelector(wrapper);
   }
   onStart(e) {
+<<<<<<< HEAD
     if (e.type === "mousedown") return this.onMouseEvent(e);
     if (e.type === "touchstart") return this.onTouchEvent(e);
     this.transition(false);
   }
 
   onMouseEvent(e) {
+=======
+>>>>>>> parent of 76259b8 (updt-distance: Criação dos calculos de distâncias dos eventos para os slides)
     e.preventDefault();
     console.log("Clicked!");
     this.wrapper.addEventListener("mousemove", this.onMove);

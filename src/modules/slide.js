@@ -89,7 +89,7 @@ export default class Slide {
     this.index = {
       prev: index ? index - 1 : slideLength,
       active: index,
-      next: index === slideLength ? slideLength - 1 : index + 1,
+      next: index === slideLength ? slideLength : index + 1,
     };
   }
 

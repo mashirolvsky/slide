@@ -42,6 +42,19 @@ export default class Slide {
     const movetype = e.type === "mouseup" ? "mousemove" : "touchmove";
     this.wrapper.removeEventListener(movetype, this.onMove, { passive: true });
     this.dist.finalPosition = this.dist.movedPosition;
+    this.switchSlideOnEnd();
+  }
+
+  switchSlideOnEnd() {
+    if (this.dist.movement > 120 && this.index.next !== undefined) {
+      console.log(this.index);
+      this.activeNextSlide();
+    } else if (this.dist.movement < -120 && this.index.prev !== undefined) {
+      console.log(this.index);
+      this.activePrevSlide();
+    } else {
+      this.changeSlide(this.index.active);
+    }
   }
 
   addSlideEvents() {
@@ -74,9 +87,9 @@ export default class Slide {
   slideIndexNav(index) {
     let slideLength = index.length + 1;
     this.index = {
-      prev: index ? index - 1 : undefined,
+      prev: index ? index - 1 : slideLength,
       active: index,
-      next: index === slideLength ? undefined : index + 1,
+      next: index === slideLength ? slideLength - 1 : index + 1,
     };
   }
 
@@ -85,6 +98,13 @@ export default class Slide {
     this.moveSlide(activeSlide.position);
     this.slideIndexNav(index);
     this.dist.finalPosition = activeSlide.position;
+  }
+
+  activePrevSlide() {
+    if (this.index.prev !== undefined) this.changeSlide(this.index.prev);
+  }
+  activeNextSlide() {
+    if (this.index.next !== undefined) this.changeSlide(this.index.next);
   }
 
   init() {

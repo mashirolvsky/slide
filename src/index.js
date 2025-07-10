@@ -1,5 +1,4 @@
-import Slide from "./modules/slide.js";
+import { SlideNav } from "./modules/slide.js";
 
-const slide = new Slide(".slide-wrapper", ".slide");
-
+const slide = new SlideNav(".slide-wrapper", ".slide");
 slide.init();

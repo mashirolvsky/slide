@@ -155,14 +155,58 @@ export class Slide {
 }
 
 export class SlideNav extends Slide {
+  constructor(slide, wrapper) {
+    super(slide, wrapper);
+    this.bindControlEvent();
+  }
+
   addArrow(prev, next) {
     this.prevElement = document.querySelector(prev);
     this.nextElement = document.querySelector(next);
     this.addArrowEvent();
+    this.createControl();
   }
 
   addArrowEvent() {
     this.prevElement.addEventListener("click", this.activePrevSlide);
     this.nextElement.addEventListener("click", this.activeNextSlide);
+  }
+
+  createControl() {
+    const control = document.createElement("ul");
+    control.dataset.control = "slide";
+    this.slideArr.forEach((element, index) => {
+      control.innerHTML += `<li><a href="#slide${index + 1}"></a></li>`;
+    });
+    this.wrapper.appendChild(control);
+    return control;
+  }
+
+  eventControl(item, index) {
+    item.addEventListener("click", e => {
+      e.preventDefault();
+      console.log(index);
+      this.changeSlide(index);
+      this.activeControlItem();
+    });
+  }
+
+  activeControlItem() {
+    // this.controlArray.forEach(slide => {
+    //   return slide.classList.remove(this.activeClass);
+    // });
+    // this.controlArray[this.index.active].classList.add(this.activeClass);
+  }
+
+  addControl(customControl) {
+    this.control =
+      document.querySelector(customControl) || this.createControl();
+    this.controlArray = [...this.control.children];
+    console.log(this.controlArray);
+    this.controlArray.forEach(this.eventControl);
+  }
+
+  bindControlEvent() {
+    this.addControl = this.addControl.bind(this);
   }
 }

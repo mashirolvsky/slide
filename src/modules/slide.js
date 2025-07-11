@@ -25,7 +25,7 @@ export class Slide {
   }
 
   updatePosition(clientX) {
-    this.dist.movement = (this.dist.startX - clientX) * (clientX * 0.01);
+    this.dist.movement = (this.dist.startX - clientX) * 1.54;
     return this.dist.finalPosition - this.dist.movement;
   }
 
@@ -175,9 +175,8 @@ export class SlideNav extends Slide {
     const control = document.createElement("ul");
     control.dataset.control = "slide";
     this.slideArray.forEach((item, index) => {
-      control.innerHTML += `<li><a href="#slide-${index + 1}">${
-        index + 1
-      }</a></li>`;
+      control.innerHTML += `<li><a href="#slide-${index + 1}">${index + 1
+        }</a></li>`;
     });
     this.wrapper.appendChild(control);
     return control;

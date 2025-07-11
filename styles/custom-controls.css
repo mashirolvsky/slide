@@ -15,7 +15,7 @@
   border-radius: 0.25rem;
   overflow: hidden;
   transition: 352ms cubic-bezier(0.2, 1, 0, 1.5) allow-discrete;
-  cursor: pointer;
+  cursor: var(--custom-pointer) 10 10, auto;
 }
 
 .custom-controls li:hover {
